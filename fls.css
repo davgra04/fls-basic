@@ -1,0 +1,14 @@
+
+* {
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    background-color: #008090;
+}
+
+#json-shows {
+    font-size: 50%;
+}
+
+#errormsg {
+    color: salmon;
+}
