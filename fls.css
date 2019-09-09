@@ -5,10 +5,54 @@
     background-color: #008090;
 }
 
-#json-shows {
+#table-upcoming-shows #table-followed-artists #footer {
+    margin:0 auto;
+    /* display: inline; */
+}
+
+.extra-small {
     font-size: 50%;
 }
 
 #errormsg {
     color: salmon;
+}
+
+td {
+    padding-right: 1em;
+}
+
+th {
+    text-align: left;
+}
+
+#footer {
+    padding-top: 2em;
+}
+
+body {
+    max-width:70em;
+    /* text-align: center; */
+}
+
+.artist-list-item {
+    display: inline;
+    padding-right: 4em;
+    word-wrap: break-word;
+    
+}
+
+#table-followed-artists {
+    -webkit-column-count: 4; /* Chrome, Safari, Opera */
+    -moz-column-count: 4; /* Firefox */
+    column-count: 4;
+}
+  
+ul {
+    margin: 0;
+    /* height: 100px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap; */
+    /* padding-right: 10em; */
 }

@@ -3,7 +3,8 @@
 import time
 from selenium import webdriver
 
-url = "file:///Users/devgru/code/fls/fls-basic/fls.html"
+# url = "file:///Users/devgru/code/fls/fls-basic/fls.html"
+url = "http://localhost:8000"
 
 browser = webdriver.Firefox()
 browser.get(url)

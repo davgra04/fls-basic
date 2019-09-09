@@ -5,14 +5,22 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 let flsCoreEndpoint = "http://localhost:8001"
+let debug = false;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////    on DOMContentLoaded
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 document.addEventListener("DOMContentLoaded", function () {
+    let urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("debug")) {
+        console.log("debug set");
+        debug = true;
+    }
+
     GetUpcomingShows();
     GetArtistList();
+    GetFooter();
 }, false)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,22 +53,41 @@ function InsertUpcomingShowsTable(showlist) {
 
     console.log(JSON.stringify(showlist));
     let tableUpcomingShows = document.getElementById("table-upcoming-shows");
+    let table_html = ""
 
-    let table_html = `<h3>raw json</h3>
-    <small id="json-shows">` + JSON.stringify(showlist) + `</small>
-    <h3>table</h3>
-    <table>
-        <thead>
-            <tr>
-                <th></th>
-                <th>Date</th>
-                <th>Artist</th>
-                <th>Location</th>
-                <th>Venue</th>
-            </tr>
-        </thead>
-        <tbody>`;
+    // start the show list section, depending on if debug urlparam is set
+    if (debug) {
+        table_html += `<h3>raw json</h3>
+        <small class="extra-small">` + JSON.stringify(showlist) + `</small>
+        <h3>table</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Date</th>
+                    <th>Artist</th>
+                    <th>Location</th>
+                    <th>Venue</th>
+                </tr>
+            </thead>
+            <tbody>`;
 
+    } else {
+        table_html += `
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Date</th>
+                    <th>Artist</th>
+                    <th>Location</th>
+                    <th>Venue</th>
+                </tr>
+            </thead>
+            <tbody>`;
+    }
+
+    // finish off show list table
     showlist.shows.forEach(function (show, index) {
         let newLabel = "";
         if (showlist.query_date - show.date_added < 7 * 24 * 60 * 60) {
@@ -103,11 +130,18 @@ function InsertArtistList(artistlist) {
 
     console.log(JSON.stringify(artistlist));
     let tableArtistList = document.getElementById("table-followed-artists");
+    let table_html = ""
 
-    let table_html = `<h3>raw json</h3>
-    <small id="json-shows">` + JSON.stringify(artistlist) + `</small>
-    <h3>list</h3>
-    <ul>`;
+    // start the show list section, depending on if debug urlparam is set
+    if (debug) {
+        table_html += `<h3>raw json</h3>
+            <small class="extra-small">` + JSON.stringify(artistlist) + `</small>
+            <h3>list</h3>
+            <ul>`;
+
+    } else {
+        table_html += `<ul>`;
+    }
 
 
     artistlist.forEach(function (artist, index) {
@@ -115,6 +149,26 @@ function InsertArtistList(artistlist) {
     })
 
     table_html += `</ul>`;
+
+    // // start the show list section, depending on if debug urlparam is set
+    // if (debug) {
+    //     table_html += `<h3>raw json</h3>
+    //         <small class="extra-small">` + JSON.stringify(artistlist) + `</small>
+    //         <h3>list</h3>
+    //         <div>`;
+
+    // } else {
+    //     table_html += `<div>`;
+    // }
+    // // table_html += `<div>` + artistlist.join(" | ") + `</div>`
+
+    // artistlist.forEach(function (artist, index) {
+    //     artist = artist.replace(/ /g, '\u00a0')
+    //     table_html += `<small class="artist-list-item extra-small">` + artist + `</small>`;
+    // })
+
+
+    // table_html += `</div>`;
 
     tableArtistList.innerHTML = table_html
 }
@@ -130,3 +184,14 @@ function InsertArtistList(artistlist) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // TODO
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////    footer
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function GetFooter() {
+    let footerDiv = document.getElementById("footer");
+    footerDiv.innerHTML = `<small>fls-basic v0.1</small>
+    <br>
+    <small>2019</small>`
+}
