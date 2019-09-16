@@ -46,7 +46,15 @@ function QueryFLSCore(url, callback) {
 // queries fls-core for upcoming shows and inserts them into the upcoming shows div
 function GetUpcomingShows() {
     console.log("calling GetUpcomingShows()");
-    QueryFLSCore("/v1/shows", InsertUpcomingShowsTable);
+
+    urlParams = getUrlParams(window.location.search)
+
+    if(!("region" in urlParams)) {
+        urlParams = {"region": "TX"}
+    }
+    
+    console.log("urlParams: " + urlParams)
+    QueryFLSCore("/v1/shows?region=" + urlParams["region"], InsertUpcomingShowsTable);
 }
 
 function InsertUpcomingShowsTable(showlist) {
@@ -54,6 +62,10 @@ function InsertUpcomingShowsTable(showlist) {
     console.log(JSON.stringify(showlist));
     let tableUpcomingShows = document.getElementById("table-upcoming-shows");
     let table_html = ""
+
+    if (showlist.shows == null) {
+        showlist.shows = []
+    }
 
     // start the show list section, depending on if debug urlparam is set
     if (debug) {
@@ -194,4 +206,20 @@ function GetFooter() {
     footerDiv.innerHTML = `<small>fls-basic v0.1</small>
     <br>
     <small>2019</small>`
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////    misc
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function getUrlParams(search) {
+    let hashes = search.slice(search.indexOf('?') + 1).split('&')
+    let params = {}
+    hashes.map(hash => {
+        let [key, val] = hash.split('=')
+        params[key] = decodeURIComponent(val)
+    })
+
+    return params
 }
